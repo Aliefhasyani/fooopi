@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\City;
+use Exception;
+use Illuminate\Http\Request;
+
+class CityController extends Controller
+{
+    public function index(){
+        
+        $cities = City::with(['country','state'])->get();
+
+        return response()->json(
+            [
+                "cities" => $cities
+
+            ]);
+    }
+
+    public function store(Request $request){
+        
+        
+        try{
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'country_id' => 'required|exists:country,id',
+                'state_id' => 'required|exists:state,id',
+            ]);
+
+            $city = City::create($validated);
+
+            return response()->json(
+                [
+                    "message" => "data created!",
+                    "data" => $city
+
+                ]);
+        }catch(Exception $e){
+             return response()->json(
+                [
+                    "message" => "an error occured, data not saved!",
+                    
+
+                ]);
+        }
+
+    }
+
+    public function show($id){
+
+        $city = City::with(['country','state'])->findOrFail($id);
+
+        return response()->json(
+            [
+                "city" => $city
+            ]);
+    }
+    
+}
