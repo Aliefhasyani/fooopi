@@ -18,10 +18,18 @@ class CityController extends Controller
 
             ]);
     }
+    
+    public function show($id){
+
+        $city = City::with(['country','state'])->findOrFail($id);
+
+        return response()->json(
+            [
+                "city" => $city
+            ]);
+    }
 
     public function store(Request $request){
-        
-        
         try{
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -48,14 +56,19 @@ class CityController extends Controller
 
     }
 
-    public function show($id){
+    public function destroy($id){
+        $city = City::findOrFail($id);
 
-        $city = City::with(['country','state'])->findOrFail($id);
+        $city->delete();
 
         return response()->json(
             [
-                "city" => $city
-            ]);
+                "message" => "data deleted!"
+        ]);
     }
+        
+     
+
+  
     
 }
