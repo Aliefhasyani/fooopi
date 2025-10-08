@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressessController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CityController;
 use Illuminate\Http\Request;
@@ -13,3 +14,4 @@ Route::post('/register',[ApiController::class,'register']);
 Route::post('/login',[ApiController::class,'login']);
 
 Route::apiResource('/city',CityController::class)->middleware(['auth:sanctum']);
+Route::apiResource('/addressess',AddressessController::class);
