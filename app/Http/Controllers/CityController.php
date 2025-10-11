@@ -7,18 +7,37 @@ use Exception;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
-{
+{   
+    //show all cities with relationships
+   
     public function index(){
-        
-        $cities = City::with(['country','state'])->get();
+        $cities = City::with(['country', 'state'])->get();
 
-        return response()->json(
-            [
-                "cities" => $cities
+        $formatted = $cities->map(function ($city) {
+            return [
+                'city'=>[
+                     'id' => $city->id,
+                    'name' => $city->name,
+                ],
+                'state' => [
+                    'id'=> $city->state->id,
+                    "name" => $city->state->name ?? null,
+                ],
+               'country' => [
+                    'id'=> $city->country->id,
+                    "name" => $city->country->name ?? null,
+                    "population" => $city->country->population ?? null,
+                ],
+            ];
+        });
 
-            ]);
+        return response()->json([
+            "success" => true,
+            "data" => $formatted
+        ]);
     }
-    
+
+    //show specific city with relationship
     public function show($id){
 
         $city = City::with(['country','state'])->findOrFail($id);
@@ -29,6 +48,7 @@ class CityController extends Controller
             ]);
     }
 
+    //store new city record
     public function store(Request $request){
         try{
             $validated = $request->validate([
@@ -56,6 +76,28 @@ class CityController extends Controller
 
     }
 
+    //update a city
+    public function update(Request $request,$id){
+        $city = City::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'string|max:255|required',
+            'state_id'=> 'required|exists:state,id',
+            'country_id'=> 'required|exists:country,id',
+
+        ]);
+
+        $city->update($validated);
+        $city->refresh();
+
+        return response()->json(
+            [
+                "message" => "data updated",
+                "data" => $city
+            ]);
+    }
+
+    //delete a city
     public function destroy($id){
         $city = City::findOrFail($id);
 

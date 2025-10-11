@@ -13,5 +13,5 @@ Route::get('/user', function (Request $request) {
 Route::post('/register',[ApiController::class,'register']);
 Route::post('/login',[ApiController::class,'login']);
 
-Route::apiResource('/city',CityController::class)->middleware(['auth:sanctum']);
+Route::apiResource('/city',CityController::class);
 Route::apiResource('/addressess',AddressessController::class)->middleware(['auth:sanctum']);
