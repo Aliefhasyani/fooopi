@@ -3,37 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use Illuminate\Validation\ValidationException;
+
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
 {   
     //show all cities with relationships
-   
     public function index(){
         $cities = City::with(['country', 'state'])->get();
 
         $formatted = $cities->map(function ($city) {
             return [
+                
                 'city'=>[
-                     'id' => $city->id,
+                    'id' => $city->id,
                     'name' => $city->name,
                 ],
-                'state' => [
-                    'id'=> $city->state->id,
-                    "name" => $city->state->name ?? null,
+                'related data entry' => [
+                    'state' => [
+                        'id'=> $city->state->id,
+                        'name' => $city->state->name ?? null,
+                        
+                    ],
+                    'country' => [
+                        'id'=> $city->country->id,
+                        'name' => $city->country->name ?? null,
+                        'population' => $city->country->population ?? null,
+                    ],
                 ],
-               'country' => [
-                    'id'=> $city->country->id,
-                    "name" => $city->country->name ?? null,
-                    "population" => $city->country->population ?? null,
-                ],
+             
             ];
         });
 
         return response()->json([
-            "success" => true,
-            "data" => $formatted
+            'success' => true,
+            'data' => $formatted
         ]);
     }
 
@@ -43,12 +50,13 @@ class CityController extends Controller
         $city = City::with(['country','state'])->findOrFail($id);
 
         return response()->json(
-            [
-                "city" => $city
+            [   
+                'success' => true,
+                'city' => $city
             ]);
     }
 
-    //store new city record
+    //store new city record(HAS EXCEPTION)
     public function store(Request $request){
         try{
             $validated = $request->validate([
@@ -61,22 +69,34 @@ class CityController extends Controller
 
             return response()->json(
                 [
-                    "message" => "data created!",
-                    "data" => $city
+                    'success' => true,
+                    'message' => 'data created!',
+                    'data' => $city
 
                 ]);
-        }catch(Exception $e){
+        }catch(ValidationException $e){
              return response()->json(
-                [
-                    "message" => "an error occured, data not saved!",
+                [   'success' => false,
+                    'errors' => [
+                        [   
+                            'message' => 'an error occured',
+                            'error' => $e->errors()
+                        ]
+                    ]
+                    
                     
 
-                ]);
+                ],400);
+        }catch(Exception $ex){
+            return response()->json(
+                [
+                    'succes' => false,
+                    'errors' => $ex ->getMessage()
+                ],500);
         }
-
     }
 
-    //update a city
+    //update a city(HAS EXCEPTION)
     public function update(Request $request,$id){
         $city = City::findOrFail($id);
 
@@ -92,22 +112,35 @@ class CityController extends Controller
 
         return response()->json(
             [
-                "message" => "data updated",
-                "data" => $city
+                'success' => true,
+                'message' => 'data updated',
+                'data' => $city
             ]);
     }
 
     //delete a city
     public function destroy($id){
+    try {
         $city = City::findOrFail($id);
-
         $city->delete();
 
-        return response()->json(
-            [
-                "message" => "data deleted!"
+        return response()->json([
+            'success' => true,
+            'message' => 'data deleted!'
         ]);
+    }catch (ModelNotFoundException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 404);
+    }catch (Exception $ex) {
+        return response()->json([
+            'success' => false,
+            'message' => $ex->getMessage()
+        ], 500);
     }
+}
+
         
      
 
