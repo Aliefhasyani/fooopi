@@ -8,6 +8,8 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class CityController extends Controller
 {   
@@ -77,15 +79,9 @@ class CityController extends Controller
         }catch(ValidationException $e){
              return response()->json(
                 [   'success' => false,
-                    'errors' => [
-                        [   
-                            'message' => 'an error occured',
-                            'error' => $e->errors()
-                        ]
-                    ]
-                    
-                    
-
+                    'message' => 'an error occured',
+                    'error' => $e->errors()
+                        
                 ],400);
         }catch(Exception $ex){
             return response()->json(
@@ -96,7 +92,7 @@ class CityController extends Controller
         }
     }
 
-    //update a city(HAS EXCEPTION)
+    //update a city
     public function update(Request $request,$id){
         $city = City::findOrFail($id);
 
@@ -118,7 +114,7 @@ class CityController extends Controller
             ]);
     }
 
-    //delete a city
+    //delete a city(HAS EXCEPTION)
     public function destroy($id){
     try {
         $city = City::findOrFail($id);
