@@ -15,6 +15,10 @@ class Country extends Model
         return $this->hasMany(State::class);
     }
 
+    public function cities(){
+        return $this->hasMany(City::class);
+    }
+
     public function addressess(){
         return $this->hasMany(Address::class);
     }

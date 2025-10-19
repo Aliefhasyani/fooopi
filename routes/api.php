@@ -16,4 +16,4 @@ Route::post('/login',[ApiController::class,'login']);
 
 Route::apiResource('/city',CityController::class);
 Route::apiResource('/country',CountryController::class);
-Route::apiResource('/addressess',AddressessController::class)->middleware(['auth:sanctum']);
+Route::apiResource('/address',AddressessController::class);
