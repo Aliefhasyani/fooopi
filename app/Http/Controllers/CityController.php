@@ -89,8 +89,9 @@ class CityController extends Controller
             return response()->json(
                 [
                     'success' => false,
-                    'errors' =>'city not found, ' . $ex->getMessage() 
-                ]);
+                    'message' => 'An error occurred while retrieving state data.',
+                    'errors' =>'CITY NOT FOUND, | ' . $ex->getMessage() 
+                ],404 );
             
         };
             
