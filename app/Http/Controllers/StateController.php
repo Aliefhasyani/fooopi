@@ -93,6 +93,42 @@ class StateController extends Controller{
         }
     }
 
+    public function store(Request $request){
+        
+        try{
+            
+            $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'country_id' => 'required|exists:country,id',
+
+            ]);
+
+            $data = State::create($validated);
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'data_created' => $data
+
+                ]);
+        }catch (ValidationException $ex) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'failed to store data!',
+                    'errors' => $ex->errors()
+                ]);
+        }catch(Exception $e){
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'failed to store data!',
+                    'errors' => $e->getMessage()
+                ]);
+        }
+      
+    }
+
     public function update(Request $request,$id){
         try{
             
