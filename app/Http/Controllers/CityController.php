@@ -135,7 +135,8 @@ class CityController extends Controller
     public function update(Request $request,$id){
         
         try{
-             $city = City::findOrFail($id);
+            
+            $city = City::findOrFail($id);
 
             $validated = $request->validate([
                 'name' => 'string|max:255|required',

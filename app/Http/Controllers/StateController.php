@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class StateController extends Controller{
     public function index(){
@@ -93,7 +94,58 @@ class StateController extends Controller{
     }
 
     public function update(Request $request,$id){
+        try{
+            
+            $state = State::findOrFail($id);
+            
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'country_id' => 'required|exists:country,id',
+            ]);
+
+            $state->update($validated);
+            $state->refresh();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'data successfully saved!',
+                    'data' => $state
+                ]);
+
         
+        }catch(ValidationException $ex){
+            return response()->json(
+                [   'success' => false,
+                    'message' => 'error, please fill in all fields',
+                    'error' => $ex->errors()
+                        
+                ],400);
+        }catch(Exception $e){
+             return response()->json(
+                [
+                    'succes' => false,
+                    'errors' => $e ->getMessage()
+                ],500);
+        }
+            
+    }
+
+    public function destroy($id){
+        try{
+            $state = State::findOrFail($id);
+            $state->delete();
+
+            return response() -> json(
+                [
+                    'success' => true,
+                    'message' => 'data successfully deleted!'
+                ]);
+        }catch(ModelNotFoundException $ex){
+            
+        }catch (Exception $e) {
+           
+        }
     }
 
 
