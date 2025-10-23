@@ -97,12 +97,12 @@ class StateController extends Controller{
         try{
             
             $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'country_id' => 'required|exists:country,id',
-
+                'name' => 'required|string|max:255',
+                'country_id' => 'required|exists:country,id',
             ]);
 
             $data = State::create($validated);
+            $data->refresh();
 
             return response()->json(
                 [

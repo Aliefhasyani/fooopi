@@ -6,6 +6,7 @@ use App\Models\Country;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Constraint\Count;
 
 class CountryController extends Controller
@@ -106,6 +107,39 @@ class CountryController extends Controller
                     'errors' => $e->getMessage()
                 ]);
         }
+    }
+
+    public function store(Request $request){
+        try{
+            
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'population' => 'required|integer',
+            ]);
+
+            $country = Country::create($validated);
+            $country->refresh();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Data successfully created!',
+                    'data' => $country
+                ]);
+        }catch(ValidationException $ex){
+            return response()->json(
+                [
+                    'success' => false,
+                    'errors' => $ex->errors()
+                ]);
+        }catch(Exception $e){
+            return response()->json(
+                [
+                    'success' => false,
+                    'errors' => $e->getMessage()
+                ]);
+        }
+           
     }
 
     public function destroy($id){
