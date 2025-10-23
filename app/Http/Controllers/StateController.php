@@ -94,7 +94,6 @@ class StateController extends Controller{
     }
 
     public function store(Request $request){
-        
         try{
             
             $validated = $request->validate([
@@ -128,7 +127,8 @@ class StateController extends Controller{
         }
       
     }
-
+        
+        
     public function update(Request $request,$id){
         try{
             
