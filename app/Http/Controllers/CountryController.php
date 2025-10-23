@@ -9,13 +9,44 @@ use PHPUnit\Framework\Constraint\Count;
 class CountryController extends Controller
 {
     public function index(){
-        $country = Country::all();
+        $countries = Country::with(['states','cities','addressess'])->get();
         
+        $formatted = $countries->map(function($country){
+            return [
+                'country' => [
+                    'country_id' => $country->id,
+                    'country_name' => $country->name,
+                    'country_population' => $country->population,
+                ],
+                'related data entries' => [
+                    'state' => $country->states->map(function($state){
+                        return [
+                            'state_id' => $state->id,
+                            'state_name' => $state->name,
+                        ];
+                    }),
+                    'cities' => $country ->cities->map(function($city){
+                        return [
+                            'city_id' => $city->id,
+                            'city_name' => $city->name,
+                        ];
+                    }),
+                    'addressess' => $country->addressess->map(function($address){
+                        return [
+                            'address_id' => $address->id,
+                            'address_name' => $address->name,
+                        ];
+                    })
+                ]
+
+            ];
+        });
+
         return response()->json(
             [
                 'success' => true,
-                'data' => $country
-                
+                'data' => $formatted
+
             ]);
     }
 }
