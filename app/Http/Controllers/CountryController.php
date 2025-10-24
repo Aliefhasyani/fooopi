@@ -7,7 +7,9 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use PhpParser\Node\Expr;
 use PHPUnit\Framework\Constraint\Count;
+use Symfony\Component\Console\Helper\TreeNode;
 
 class CountryController extends Controller
 {
@@ -140,6 +142,47 @@ class CountryController extends Controller
                 ]);
         }
            
+    }
+
+    public function update(Request $request,$id){
+        try{
+            $country = Country::findOrFail($id);
+
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'population' => 'required|integer',
+            ]);
+
+            $country->update($validated);
+            $country->refresh();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Data successfully created!',
+                    'data' => $country
+                ]);
+                
+        }catch(ValidationException $e){
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'error, please fill in all fields',
+                    'errors' => $e->errors()
+                ]);
+        }catch (ModelNotFoundException $ex) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $ex->getMessage()
+                ]);
+        }catch(Exception $exc){
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $exc->getMessage()
+                ]);
+        }
     }
 
     public function destroy($id){

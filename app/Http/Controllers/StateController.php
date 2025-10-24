@@ -157,6 +157,12 @@ class StateController extends Controller{
                     'error' => $ex->errors()
                         
                 ],400);
+        }catch (ModelNotFoundException $ex) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $ex->getMessage()
+                ]);
         }catch(Exception $e){
              return response()->json(
                 [
