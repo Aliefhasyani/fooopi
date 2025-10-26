@@ -17,6 +17,7 @@ class CityController extends Controller
     //show all cities with relationships
     public function index(){
         $cities = City::with(['country', 'state'])->get();
+        
         $formatted = $cities->map(function ($city) {
          
             return [

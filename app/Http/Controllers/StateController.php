@@ -116,14 +116,14 @@ class StateController extends Controller{
                     'success' => false,
                     'message' => 'failed to store data!',
                     'errors' => $ex->errors()
-                ]);
+                ],422);
         }catch(Exception $e){
             return response()->json(
                 [
                     'success' => false,
                     'message' => 'failed to store data!',
                     'errors' => $e->getMessage()
-                ]);
+                ],500);
         }
       
     }
@@ -156,13 +156,13 @@ class StateController extends Controller{
                     'message' => 'error, please fill in all fields',
                     'error' => $ex->errors()
                         
-                ],400);
+                ],422);
         }catch (ModelNotFoundException $ex) {
             return response()->json(
                 [
                     'success' => false,
                     'message' => $ex->getMessage()
-                ]);
+                ],404);
         }catch(Exception $e){
              return response()->json(
                 [
@@ -184,9 +184,19 @@ class StateController extends Controller{
                     'message' => 'data successfully deleted!'
                 ]);
         }catch(ModelNotFoundException $ex){
-            
+            return response() -> json(
+                [
+                    'success' => false,
+                    'message' => 'State NOT found!',
+                    'error' => $ex->getMessage()
+                ],404);
         }catch (Exception $e) {
-           
+            return response() -> json(
+                [
+                    'success' => false,
+                    'message' => 'An error occured!',
+                    'error(s)' => $e->getMessage()
+                ],500);
         }
     }
 
