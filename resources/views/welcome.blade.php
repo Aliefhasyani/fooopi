@@ -30,6 +30,7 @@
                         >
                             Dashboard
                         </a>
+                        <p></p>
                     @else
                         <a
                             href="{{ route('login') }}"
