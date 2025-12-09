@@ -26,7 +26,7 @@ Pastikan Anda telah menginstal:
    ```bash
    git clone https://github.com/Aliefhasyani/fooopi.git
    cd fooopi
-````
+
 
 2.  **Instal dependensi:**
 
