@@ -1,26 +1,16 @@
 
-````markdown
+
 # Fooopi API
 
 Fooopi adalah RESTful API yang dibangun menggunakan framework **Laravel** (PHP). API ini dirancang untuk mengelola data geografis dan alamat pengguna, termasuk Negara, Negara Bagian (State), Kota, dan Alamat spesifik.
 
 Proyek ini menggunakan **Laravel Sanctum** untuk autentikasi token yang aman.
 
-## 🛠️ Teknologi
 
-- **PHP**: ^8.2
-- **Laravel Framework**: ^12.0
-- **Laravel Sanctum**: Autentikasi API
-- **Database**: MySQL / PostgreSQL (Sesuai konfigurasi env)
 
-## 📋 Prasyarat
 
-Pastikan Anda telah menginstal:
-- [Composer](https://getcomposer.org/)
-- [PHP](https://www.php.net/) (v8.2+)
-- Database Server (MySQL, PostgreSQL, dll)
 
-## 🚀 Instalasi
+ Instalasi
 
 1. **Clone repositori:**
    ```bash
@@ -64,13 +54,13 @@ Pastikan Anda telah menginstal:
     php artisan migrate
     ```
 
-7.  **Jalankan Server:**
+7.  **Jalankan Localhost:**
 
     ```bash
     php artisan serve
     ```
 
-## 🔐 Autentikasi (Sanctum)
+**Autentikasi (Sanctum)**
 
 API ini menggunakan **Bearer Token**.
 
@@ -81,9 +71,9 @@ API ini menggunakan **Bearer Token**.
     Accept: application/json
     ```
 
-## 📚 Dokumentasi Endpoint
+**Dokumentasi Endpoint**
 
-### Auth
+ Auth
 
 | Method | Endpoint | Deskripsi |
 | :--- | :--- | :--- |
@@ -91,7 +81,7 @@ API ini menggunakan **Bearer Token**.
 | `POST` | `/api/login` | Login user |
 | `GET` | `/api/user` | Mendapatkan data user  |
 
-### Country (Negara)
+ Country (Negara)
 
 | Method | Endpoint | Deskripsi |
 | :--- | :--- | :--- |
@@ -101,7 +91,7 @@ API ini menggunakan **Bearer Token**.
 | `PUT` | `/api/country/{id}` | Update negara |
 | `DELETE` | `/api/country/{id}` | Hapus negara |
 
-### State (Provinsi)
+ State (Provinsi)
 
 | Method | Endpoint | Deskripsi |
 | :--- | :--- | :--- |
@@ -111,7 +101,7 @@ API ini menggunakan **Bearer Token**.
 | `PUT` | `/api/state/{id}` | Update state |
 | `DELETE` | `/api/state/{id}` | Hapus state |
 
-### City (Kota)
+City (Kota)
 
 | Method | Endpoint | Deskripsi |
 | :--- | :--- | :--- |
@@ -121,7 +111,7 @@ API ini menggunakan **Bearer Token**.
 | `PUT` | `/api/city/{id}` | Update kota |
 | `DELETE` | `/api/city/{id}` | Hapus kota |
 
-### Address (Alamat)
+ Address (Alamat)
 
 | Method | Endpoint | Deskripsi |
 | :--- | :--- | :--- |
@@ -134,4 +124,3 @@ API ini menggunakan **Bearer Token**.
 
 [MIT license](https://opensource.org/licenses/MIT).
 
-```
