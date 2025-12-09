@@ -1,8 +1,8 @@
 
 
-# Fooopi API
 
-Fooopi adalah RESTful API yang dibangun menggunakan framework **Laravel** (PHP). API ini dirancang untuk mengelola data geografis dan alamat pengguna, termasuk Negara, Negara Bagian (State), Kota, dan Alamat spesifik.
+
+fooopi adalah RESTful API yang dibangun menggunakan framework **Laravel** . API ini dirancang untuk mengelola data geografis dan alamat pengguna, termasuk Negara, Negara Bagian (State), Kota, dan Alamat spesifik.
 
 Proyek ini menggunakan **Laravel Sanctum** untuk autentikasi token yang aman.
 
