@@ -1,6 +1,6 @@
 
 
-
+fooopi bisa diakses di : https://rapidapi.com/aliefhasyani05/api/fooopi1/playground/apiendpoint_7def617e-44ba-4dc0-9e3d-7a90c09f3599
 
 fooopi adalah RESTful API yang dibangun menggunakan framework **Laravel** . API ini dirancang untuk mengelola data geografis dan alamat pengguna, termasuk Negara, Negara Bagian (State), Kota, dan Alamat spesifik.
 
